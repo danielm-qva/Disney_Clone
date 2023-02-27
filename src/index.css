@@ -1,5 +1,3 @@
-
-
 html {
   scroll-behavior: smooth;
 }
@@ -11,31 +9,31 @@ html {
 body {
   background-color: #040714;
   color: #f9f9f9;
-  font-family: Avenir-Roman , sans-serif ;
-  padding: 0 ;
-  margin:  0;
+  font-family: Avenir-Roman, sans-serif;
+  padding: 0;
+  margin: 0;
 }
 
-a{
-   color: #f9f9f9f9;
-   text-decoration: none;
+a {
+  color: #f9f9f9f9;
+  text-decoration: none;
 }
 
 @media only screen and (min-width: 768) {
-  body { 
-   font-size: 16px;
+  body {
+    font-size: 16px;
   }
 }
 
-@media only screen and (min-height: 480px) and (min-width: 768px){
-     body { 
-      font-size: 15px;
-     }
+@media only screen and (min-height: 480px) and (min-width: 768px) {
+  body {
+    font-size: 15px;
+  }
 }
 
 
 @media only screen and (min-width: 479) {
-  body { 
-   font-size: 14px;
+  body {
+    font-size: 14px;
   }
 }
