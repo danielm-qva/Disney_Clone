@@ -1,6 +1,17 @@
 import styled from "styled-components";
-
+import { VscHome, VscSearch, VscAdd , VscStarEmpty  } from "react-icons/vsc";
+import {RiMovie2Line} from 'react-icons/ri'
+import {MdOutlineLocalMovies} from 'react-icons/md'
+import { auth, provider } from "../config/firebase";
+import { signInWithPopup } from "firebase/auth";
 function Navbar() {
+
+    const handleAuth = () => {
+       signInWithPopup(auth,provider).then(res => {
+         console.log(res)
+       })
+    }
+  
   return (
     <Nav>
       <Logo>
@@ -8,11 +19,26 @@ function Navbar() {
       </Logo>
       <NavMenu>
         <a href="/home">
-          <img src="/img/home-icon.svg" />
+          <span><VscHome/> HOME</span>
         </a>
-        <span>HOME</span>
+        <a href="/home">
+          <span><VscSearch /> SEARCH</span>
+        </a>
+        <a href="/home">
+          <span><VscAdd/> WATCHLIST</span>
+        </a>
+        <a href="/home">
+          <span><VscStarEmpty/> ORIGINAL</span>
+        </a>
+        <a href="/home">
+          <span><RiMovie2Line/> MOVIE</span>
+        </a>
+        <a href="/home">
+          <span><MdOutlineLocalMovies/> SERIE</span>
+        </a>
+    
       </NavMenu>
-      <Login>Login</Login>
+      <Login onClick={handleAuth}>LOGIN</Login>
     </Nav>
   );
 }
@@ -28,7 +54,6 @@ const Nav = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 0 36px;
-  letter-spacing: 16px;
   z-index: 3;
 `;
 const Logo = styled.a`
@@ -37,12 +62,8 @@ const Logo = styled.a`
   margin-top: 4px;
   max-height: 70px;
   font-size: 0;
-  display: inline-block;
-
-  img {
-    display: block;
-    width: 100%;
-  }
+  display: flex;
+  justify-content: center;
 `;
 
 const NavMenu = styled.div`
@@ -58,20 +79,22 @@ const NavMenu = styled.div`
   margin-left: 25px;
 
   a {
-    displey: flex;
-    align-items: center;
-    padding: 0 12px;
+    display: flex;
+     align-items: center;
+     padding: 0 12px;
   }
+
   img {
-    height: 80px;
+    height: 20px;
     min-width: 20px;
     width: 20px;
     z-index: auto;
   }
+
   spam {
     color: rgb(249, 249, 249);
     font-size: 13px;
-    letter-spacing: 1.38px;
+    letter-spacing: 1.20px;
     line-height: 1.08;
     padding: 2px 0px;
     white-space: nowrap;
@@ -91,12 +114,12 @@ const NavMenu = styled.div`
     transform-origin: left center;
     transform: scaleX(0);
     transition: all 250ms cubic-bezier(0.25, 0.46 , 0.45 , 0.94) 0s; 
-    visibility: hidden;
+    visibility: visible ;
     width: auto;
   }
 
   &:hover {
-     span:before{
+     span:before {
       transform: scaleX(1);
       visibility: visible;
       opacity: 1 !important;
@@ -106,13 +129,15 @@ const NavMenu = styled.div`
 
 const Login = styled.button`
   font-weight: bold;
-  padding: 0 4px;
-  margin: 0 4px;
-  min-height: 42px;
-  width: 82px;
-  font-size: 16px;
+  padding:  8px 16px;
+  border: 1px solid white;
+  border-radius: 4px;
   background: transparent;
   color: #f9f9f9;
+  &:hover {
+    background-color: #f9f9f9;
+    color: black;
+  }
 `;
 
 export default Navbar;
