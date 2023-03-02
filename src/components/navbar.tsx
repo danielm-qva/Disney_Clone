@@ -1,44 +1,111 @@
 import styled from "styled-components";
-import { VscHome, VscSearch, VscAdd , VscStarEmpty  } from "react-icons/vsc";
-import {RiMovie2Line} from 'react-icons/ri'
-import {MdOutlineLocalMovies} from 'react-icons/md'
+import { VscHome, VscSearch, VscAdd, VscStarEmpty } from "react-icons/vsc";
+import { RiMovie2Line } from "react-icons/ri";
+import { MdOutlineLocalMovies } from "react-icons/md";
 import { auth, provider } from "../config/firebase";
-import { signInWithPopup } from "firebase/auth";
-function Navbar() {
+import { signInWithPopup, onAuthStateChanged , signOut } from "firebase/auth";
+import { useDispatch, useSelector } from "react-redux/es/exports";
+import { setSignOutState, setUserLoginDetail } from "../redux/slice/userSlice";
+import store from "../redux/store/store";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-    const handleAuth = () => {
-       signInWithPopup(auth,provider).then(res => {
-         console.log(res)
-       })
-    }
-  
+function Navbar() {
+  const dispacht = useDispatch();
+  const navigate = useNavigate();
+  const islogin = useSelector((store) => store.user.isLogin);
+  const photo = useSelector((store) => store.user.photo);
+  const username = useSelector((store) => store.user.name);
+
+  // useEffect(() => {
+  //  onAuthStateChanged(auth ,async (user) => {
+  //          if(user) {
+  //             setUser(user);
+  //             navigate('/home')
+  //          }
+  //  })
+  // }, [username])
+
+  const handleAuth = () => {
+    signInWithPopup(auth, provider)
+      .then((res) => {
+        setUser(res.user);
+        navigate('/home')
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
+  };
+  const setUser = (user: any) => {
+    dispacht(
+      setUserLoginDetail({
+        name: user.displayName,
+        email: user.email,
+        photo: user.photoURL,
+        isLogin: true,
+      })
+    );
+  };
+
+  const handelOut = () => {
+     signOut(auth).then((res) => {
+         console.log(res);
+      dispacht(setSignOutState())
+       navigate('/')
+     }).catch(error => {
+      alert(error.message);
+     })  
+  };
+
   return (
     <Nav>
       <Logo>
         <img src="/img/logo.svg" />
       </Logo>
-      <NavMenu>
-        <a href="/home">
-          <span><VscHome/> HOME</span>
-        </a>
-        <a href="/home">
-          <span><VscSearch /> SEARCH</span>
-        </a>
-        <a href="/home">
-          <span><VscAdd/> WATCHLIST</span>
-        </a>
-        <a href="/home">
-          <span><VscStarEmpty/> ORIGINAL</span>
-        </a>
-        <a href="/home">
-          <span><RiMovie2Line/> MOVIE</span>
-        </a>
-        <a href="/home">
-          <span><MdOutlineLocalMovies/> SERIE</span>
-        </a>
-    
-      </NavMenu>
-      <Login onClick={handleAuth}>LOGIN</Login>
+      {!islogin ? (
+        <Login onClick={handleAuth}>LOGIN</Login>
+      ) : (
+        <>
+          <NavMenu>
+            <a href="/home">
+              <span>
+                <VscHome /> HOME
+              </span>
+            </a>
+            <a href="/home">
+              <span>
+                <VscSearch /> SEARCH
+              </span>
+            </a>
+            <a href="/home">
+              <span>
+                <VscAdd /> WATCHLIST
+              </span>
+            </a>
+            <a href="/home">
+              <span>
+                <VscStarEmpty /> ORIGINAL
+              </span>
+            </a>
+            <a href="/home">
+              <span>
+                <RiMovie2Line /> MOVIE
+              </span>
+            </a>
+            <a href="/home">
+              <span>
+                <MdOutlineLocalMovies /> SERIE
+              </span>
+            </a>
+          </NavMenu>
+          <SignOut>
+            <UserImg src={photo} alt={username} />
+            <DropDown>
+            <span onClick={handelOut}>Logout</span>
+            </DropDown>
+          </SignOut>
+        </>
+      )}
     </Nav>
   );
 }
@@ -120,16 +187,15 @@ const NavMenu = styled.div`
 
   &:hover {
      span:before {
-      transform: scaleX(1);
-      visibility: visible;
-      opacity: 1 !important;
+      letter-spacing: 1.65px;
+      font-size: 56px;
      }
   }
 `;
 
 const Login = styled.button`
   font-weight: bold;
-  padding:  8px 16px;
+  padding: 8px 16px;
   border: 1px solid white;
   border-radius: 4px;
   background: transparent;
@@ -137,6 +203,44 @@ const Login = styled.button`
   &:hover {
     background-color: #f9f9f9;
     color: black;
+  }
+`;
+
+const UserImg = styled.img`
+  height: 100%;
+`;
+
+const DropDown = styled.div`
+    position: absolute;
+    top : 48px;
+    background: rgb(19,19,19);
+    box-shadow: rgb( 85 , 75 ,52 ,0.36) 6px 8px 6px 8px ;
+    border-radius: 5px ;
+    padding: 10px 10px ;
+    margin: 5px 5px;
+    font-size: 19px;
+    letter-spacing: 4px;
+    opacity: 0;
+`;
+const SignOut = styled.div`
+  position: relative;
+  height: 48px;
+  width: 48px;
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+
+  ${UserImg} {
+    border-radius: 50%50%;
+    width: 100%;
+  }
+
+  &: hover {
+    ${DropDown} {
+      opacity: 1;
+      transition-duration: 1s;
+    }
   }
 `;
 
