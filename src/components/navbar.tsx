@@ -8,14 +8,14 @@ import { useDispatch, useSelector } from "react-redux/es/exports";
 import { setSignOutState, setUserLoginDetail } from "../redux/slice/userSlice";
 import store from "../redux/store/store";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Navbar() {
   const dispacht = useDispatch();
   const navigate = useNavigate();
-  const islogin = useSelector((store) => store.user.isLogin);
-  const photo = useSelector((store) => store.user.photo);
-  const username = useSelector((store) => store.user.name);
+  const islogin = useSelector((store: any) => store.user.isLogin);
+  const photo = useSelector((store: any) => store.user.photo);
+  const username = useSelector((store: any) => store.user.name);
 
   // useEffect(() => {
   //  onAuthStateChanged(auth ,async (user) => {
@@ -67,36 +67,36 @@ function Navbar() {
       ) : (
         <>
           <NavMenu>
-            <a href="/home">
+            <Link to="/home">
               <span>
                 <VscHome /> HOME
               </span>
-            </a>
-            <a href="/home">
+            </Link>
+            <Link to="/home">
               <span>
                 <VscSearch /> SEARCH
               </span>
-            </a>
-            <a href="/home">
+            </Link>
+             <Link to={"/home"}>
               <span>
                 <VscAdd /> WATCHLIST
               </span>
-            </a>
-            <a href="/home">
+            </Link>
+            <Link to="/originals">
               <span>
                 <VscStarEmpty /> ORIGINAL
               </span>
-            </a>
-            <a href="/home">
+            </Link>
+            <Link to="/home">
               <span>
                 <RiMovie2Line /> MOVIE
               </span>
-            </a>
-            <a href="/home">
+            </Link>
+            <Link to="/home">
               <span>
                 <MdOutlineLocalMovies /> SERIE
               </span>
-            </a>
+            </Link>
           </NavMenu>
           <SignOut>
             <UserImg src={photo} alt={username} />

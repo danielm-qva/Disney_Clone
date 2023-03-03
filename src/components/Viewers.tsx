@@ -41,6 +41,10 @@ const Container = styled.div`
   margin-top: 30px;
   display: flex;
   justify-content: space-around;
+
+  @media (min-width: 768px){
+    
+  }
 `;
 
 
@@ -69,11 +73,10 @@ const Wrap = styled.div`
   }
 
   video {
-    height: 10%;
     top: 0px;
     position:absolute;
     opacity: 0;
-    z-index: 0;
+    z-index: -1;
   }
   &:hover {
     box-shadow: rgb(0 0 0 / 80%) 0px 40px 58px -16px, rgb(0 0 0 / 72%) 0px 30px 22px -10px;

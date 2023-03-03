@@ -1,16 +1,33 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import list from "../disneyPlusMovie.json";
+import {useSelector} from 'react-redux' ;
+import store from "../redux/store/store";
+import {useDispatch} from 'react-redux';
+import { setDetailMovie } from "../redux/slice/moivedetails.Slice";
 function Recomend() {
-  const listRecomme = list.movies.filter((item) => item.type === "recommend");
+    const  listRecomme = useSelector((store: any) => store.movie.recommend);
+    const dispacht = useDispatch();
+
+    const setMovie = (movie : any) => {
+      dispacht(setDetailMovie({
+        backgroundImg: movie.backgroundImg,
+        cardImg: movie.cardImg,
+        description: movie.description,
+        subTitle: movie.subTitle,
+        title: movie.title,
+        titleImg: movie.titleImg,
+        type: movie.type
+      }))
+}
+
   return (
     <Container>
       <h2>Recommended for you</h2>
       <Content>
-        {listRecomme.map((item, index) => (
+        {listRecomme.map((item : any, index: number) => (
           <Wrap key={index}>
-            <Link to="/">
-              <img src={item.backgroundImg} alt={item.title} />
+            <Link to="/details">
+              <img src={item.backgroundImg} alt={item.title} onClick={() => setMovie(item)} />
             </Link>
           </Wrap>
         ))}
@@ -30,23 +47,36 @@ const Content = styled.div`
   grid-gap: 25px;
   gap: 25px;
   grid-template-columns: repeat(4, minmax(0, 1fr));
+  heigt: fit-content;
 
   @media (max-width: 768px) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 `;
 const Wrap = styled.div`
+    paddding-top: 56.25%;
+    border-radius: 10px;
+    box-shadow: rgb(0 0 0 / 69%) 0px 26px 30px -10px, rgb(0 0 0 / 73%) 0px 16px 10px -10px;
+    cursor: pinter;
+    overflow: hidden;
+    position: relative;
+    border: 3px solid rgba(249, 249, 249, 0.1);
+  
    img {
-      width: 62.39%;
-      border-radius: 15px;
-      box-shadow: rgb(0 0 0 / 80%) 0px 40px 58px -16px, rgb(0 0 0 / 72%) 0px 30px 22px -10px;
-      border: 3px solid rgba(249, 249, 249, 0.1);
-      &: hover {
-         transform: scale(1.15);
-         border-color : rgba(249 , 249 , 249 , 0.8);
-         border: 2px solid rgb(249 , 249 , 249 , 0.8);
-    }
+         inset: 0px;
+         display : block ;
+         width: -webkit-fill-available;
+         object-fit: cover ;
+         opacity: 1;
+         transition : opacity 500ms  ease-in-out 0s;
+         top: 0px;
+         z-index : 1;
    }
+   &: hover {
+    transform: scale(1.05);
+    border-color: rgba(249 , 249 , 249 , 0.8);
+    border: 3px solid rgb(249 , 249 , 249 , 0.8);
+}
 
 `;
 
